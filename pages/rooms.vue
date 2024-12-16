@@ -36,7 +36,9 @@ const roomImages = computed(() => {
 
   return result;
 })
-
+onMounted(() => {
+  console.log('rooms mounted');
+})
 
 </script>
 
@@ -173,12 +175,9 @@ const roomImages = computed(() => {
                     <p class="mb-0 fw-bold">
                       NT$ 10,000
                     </p>
-                    <RouterLink
+                    <NuxtLink
                       :to="{
-                        name: 'room-detail',
-                        params: {
-                          roomId: 'a'
-                        }
+                        name: 'RoomDetail',
                       }"
                       class="icon-link icon-link-hover text-primary-100"
                     >
@@ -186,7 +185,7 @@ const roomImages = computed(() => {
                         class="bi  fs-5"
                         icon="mdi:arrow-right"
                       />
-                    </RouterLink>
+                    </NuxtLink>
                   </div>
                 </div>
               </div>
