@@ -7,8 +7,8 @@ import { Icon } from '@iconify/vue';
 const router = useRouter();
 import { storeToRefs } from 'pinia';
 const Store = useStores()
-const { roomDetail } = storeToRefs(Store)
-
+const { roomDetail, setBookingInfo } = storeToRefs(Store)
+console.log(setBookingInfo.value)
 const goBack = () => {
   router.back();
 }
@@ -61,12 +61,12 @@ const confirmBooking = () => {
                       選擇房型
                     </h3>
                     <p class="mb-0 fw-medium">
-                      尊爵雙人房
+                      {{ roomDetail.name }}
                     </p>
                   </div>
                   <button
                     class="bg-transparent border-0 fw-bold text-decoration-underline"
-                    type="button"
+                    type="button" @click="goBack"
                   >
                     編輯
                   </button>
@@ -77,15 +77,17 @@ const confirmBooking = () => {
                       訂房日期
                     </h3>
                     <p class="mb-2 fw-medium">
-                      入住：12 月 4 日星期二
+                      入住：{{ setBookingInfo.bookingInfo.date.start }}
+                      <!-- 入住：12 月 4 日星期二 -->
                     </p>
                     <p class="mb-0 fw-medium">
-                      退房：12 月 6 日星期三
+                      退房：{{ setBookingInfo.bookingInfo.date.end }}
+                      <!-- 退房：12 月 6 日星期三 -->
                     </p>
                   </div>
                   <button
                     class="bg-transparent border-0 fw-bold text-decoration-underline"
-                    type="button"
+                    type="button" @click="goBack"
                   >
                     編輯
                   </button>
@@ -96,12 +98,12 @@ const confirmBooking = () => {
                       房客人數
                     </h3>
                     <p class="mb-0 fw-medium">
-                      2 人
+                      {{ setBookingInfo.bookingPeople }} 人
                     </p>
                   </div>
                   <button
                     class="bg-transparent border-0 fw-bold text-decoration-underline"
-                    type="button"
+                    type="button" @click="goBack"
                   >
                     編輯
                   </button>
@@ -327,15 +329,15 @@ const confirmBooking = () => {
                 </h2>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <div class="d-flex align-items-center text-neutral-100 fw-medium">
-                    <span>NT$ 10,000</span>
+                    <span>NT$ {{ Number(roomDetail.price) }}</span>
                     <Icon
                       class="ms-2 me-1 text-neutral-80"
                       icon="material-symbols:close"
                     />
-                    <span class="text-neutral-80">2 晚</span>
+                    <span class="text-neutral-80">{{ Number(setBookingInfo.bookingInfo.daysCount) }} 晚</span>
                   </div>
                   <span class="fw-medium">
-                    NT$ 20,000
+                    NT$ {{ Number(roomDetail.price) * Number(setBookingInfo.bookingInfo.daysCount) }}
                   </span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center fw-medium">
@@ -352,7 +354,7 @@ const confirmBooking = () => {
                     總價
                   </p>
                   <span>
-                    NT$ 19,000
+                    NT$ {{ Number(roomDetail.price) * Number(setBookingInfo.bookingInfo.daysCount) - 1000 }}
                   </span>
                 </div>
               </div>

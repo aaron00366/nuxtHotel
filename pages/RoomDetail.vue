@@ -13,10 +13,10 @@ const openModal = () => {
 // pinia
 import { storeToRefs } from 'pinia';
 const Store = useStores()
-const { roomDetail } = storeToRefs(Store)
+const { roomDetail, setBookingInfo } = storeToRefs(Store)
 
 roomDetail.value = roomData.value.result
-const MAX_BOOKING_PEOPLE = 10;
+let MAX_BOOKING_PEOPLE = ref(0);
 const bookingPeople = ref(1);
 
 const daysCount = ref(0);
@@ -39,16 +39,28 @@ const bookingDate = reactive({
   minDate: new Date(),
   maxDate: new Date(currentDate.setFullYear(currentDate.getFullYear() + 1))
 });
-
-const handleDateChange = (bookingInfo) => {
-  const { start, end } = bookingInfo.date;
+let bookingInfo = ref({})
+const handleDateChange = (currentbookingInfo) => {
+  const { start, end } = currentbookingInfo.date;
   bookingDate.date.start = start;
   bookingDate.date.end = end;
 
-  bookingPeople.value = bookingInfo?.people || 1;
-  daysCount.value = bookingInfo.daysCount;
+  bookingPeople.value = currentbookingInfo?.people || 1;
+  daysCount.value = currentbookingInfo.daysCount;
+  bookingInfo.value = currentbookingInfo
 }
-
+const comfirmRoom = () => {
+  setBookingInfo.value = ({
+    bookingInfo: bookingInfo.value,
+    bookingPeople,
+  })
+}
+onMounted(() => {
+  setBookingInfo.value = {}
+  roomDetail.value = []
+  roomDetail.value = roomData.value.result
+  MAX_BOOKING_PEOPLE.value = roomDetail.value.maxPeople
+})
 
 </script>
 
@@ -347,7 +359,7 @@ const handleDateChange = (bookingInfo) => {
               </h5>
               <NuxtLink
                 :to="`/Booking/${roomId}`"
-                class="btn btn-primary-100 py-4 text-neutral-0 fw-bold rounded-3"
+                class="btn btn-primary-100 py-4 text-neutral-0 fw-bold rounded-3" @click="comfirmRoom"
               >
                 立即預訂
               </NuxtLink>
