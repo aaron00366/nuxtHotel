@@ -81,13 +81,13 @@ console.log(culinaryData);
             <p class="text-neutral-40 fw-semibold">
               我們致力於為您提供無與倫比的奢華體驗與優質服務
             </p>
-            <RouterLink 
+            <NuxtLink 
               to="/rooms"
               class="btn btn-neutral-0 d-flex justify-content-end align-items-center gap-3 w-100 text-end text-neutral-100 fs-5 fw-semibold border-0"
             >
               立即訂房
               <div class="cta-deco" />
-            </RouterLink>
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -207,13 +207,13 @@ console.log(culinaryData);
           <div class="mb-6 mb-md-10 fs-3 fw-bold">
             NT$ 10,000
           </div>
-          <RouterLink
+          <NuxtLink
             to="/rooms"
             class="btn btn-neutral-0 d-flex justify-content-end align-items-center gap-3 w-100 p-5 p-md-10 mb-6 mb-md-10 text-end text-neutral-100 fs-7 fs-md-5 fw-bold border-0"
           >
             查看更多
             <div class="cta-deco" />
-          </RouterLink>
+          </NuxtLink>
           <div class="d-flex justify-content-end">
             <button
               class="bg-transparent text-primary-100 icon-link icon-link-hover border-0"

@@ -11,7 +11,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const modules = ref([Autoplay, Navigation, Pagination]);
-
+const { data:roomsData } = await useFetch("https://nuxr3.zeabur.app/api/v1/rooms/");
+console.log(roomsData.value.result);
 
 const importImage = (url) => {
   const image = new URL(url, import.meta.url);
@@ -99,7 +100,7 @@ onMounted(() => {
           各種房型，任您挑選
         </h2>
         <ul class="d-flex flex-column gap-6 gap-md-12 list-unstyled">
-          <li
+          <li v-for="room in roomsData.result" :key="room._id" 
             class="card flex-lg-row border-0 rounded-3xl overflow-hidden"
           >
             <div class="row">
@@ -115,19 +116,18 @@ onMounted(() => {
                   }"
                 >
                   <swiper-slide
-                    v-for="(num, index) in 5"
+                    v-for="(num, index) in room.imageUrlList.length"
                     :key="index"
                   >
                     <picture>
                       <source
-                        :srcset="roomImages.roomA[num].desktop"
+                        :srcset="room.imageUrlList[num]"
                         media="(min-width: 768px)"
                       >
                       <img
                         class="w-100 object-fit-cover"
-                        :src="roomImages.roomA[num].mobile"
+                        :src="room.imageUrlList[num]"
                         loading="lazy"
-                        :alt="`room-a-${num}`"
                       >
                     </picture>
                   </swiper-slide>
@@ -136,10 +136,10 @@ onMounted(() => {
               <div class="col-12 col-lg-5">
                 <div class="card-body pe-md-10 py-md-10">
                   <h3 class="card-title fs-2 fw-bold text-neutral-100">
-                    尊爵雙人房
+                    {{ room.name }}
                   </h3>
                   <p class="card-text mb-6 mb-md-10 fs-8 fs-md-7 fw-medium text-neutral-80">
-                    享受高級的住宿體驗，尊爵雙人房提供給您舒適寬敞的空間和精緻的裝潢。
+                    {{ room.description }}
                   </p>
                   <ul class="d-flex gap-4 mb-6 mb-md-10 list-unstyled">
                     <li class="card-info px-4 py-5 border border-primary-40 rounded-3">
@@ -148,7 +148,7 @@ onMounted(() => {
                         icon="fluent:slide-size-24-filled"
                       />
                       <p class="mb-0 fw-bold text-neutral-80 text-nowrap">
-                        24 坪
+                        {{ room.areaInfo }} 坪
                       </p>
                     </li>
                     <li class="card-info px-4 py-5 border border-primary-40 rounded-3">
@@ -157,7 +157,7 @@ onMounted(() => {
                         icon="material-symbols:king-bed"
                       />
                       <p class="mb-0 fw-bold text-neutral-80 text-nowrap">
-                        1 張大床
+                        {{ room.bedInfo }}
                       </p>
                     </li>
                     <li class="card-info px-4 py-5 border border-primary-40 rounded-3">
@@ -166,14 +166,14 @@ onMounted(() => {
                         icon="ic:baseline-person"
                       />
                       <p class="mb-0 fw-bold text-neutral-80 text-nowrap">
-                        2-4 人
+                        最多{{ room.maxPeople }} 人
                       </p>
                     </li>
                   </ul>
                   <div class="deco-line w-100 mb-6 mb-md-10" />
                   <div class="d-flex justify-content-between align-items-center fs-7 fs-md-5 text-primary-100">
                     <p class="mb-0 fw-bold">
-                      NT$ 10,000
+                      NT$ {{ room.price }}
                     </p>
                     <NuxtLink
                       :to="{
@@ -192,7 +192,7 @@ onMounted(() => {
             </div>
           </li>
 
-          <li
+          <!-- <li
             class="card flex-lg-row border-0 rounded-3xl overflow-hidden"
           >
             <div class="row">
@@ -268,9 +268,9 @@ onMounted(() => {
                     <p class="mb-0 fw-bold">
                       NT$ 10,000
                     </p>
-                    <RouterLink
+                    <NuxtLink
                       :to="{
-                        name: 'room-detail',
+                        name: 'RoomDetail',
                         params: {
                           roomId: 'b'
                         }
@@ -281,7 +281,7 @@ onMounted(() => {
                         class="bi  fs-5"
                         icon="mdi:arrow-right"
                       />
-                    </RouterLink>
+                    </NuxtLink>
                   </div>
                 </div>
               </div>
@@ -364,9 +364,9 @@ onMounted(() => {
                     <p class="mb-0 fw-bold">
                       NT$ 10,000
                     </p>
-                    <RouterLink
+                    <NuxtLink
                       :to="{
-                        name: 'room-detail',
+                        name: 'RoomDetail',
                         params: {
                           roomId: 'c'
                         }
@@ -377,7 +377,7 @@ onMounted(() => {
                         class="bi  fs-5"
                         icon="mdi:arrow-right"
                       />
-                    </RouterLink>
+                    </NuxtLink>
                   </div>
                 </div>
               </div>
@@ -460,9 +460,9 @@ onMounted(() => {
                     <p class="mb-0 fw-bold">
                       NT$ 10,000
                     </p>
-                    <RouterLink
+                    <NuxtLink
                       :to="{
-                        name: 'room-detail',
+                        name: 'RoomDetail',
                         params: {
                           roomId: 'd'
                         }
@@ -473,12 +473,12 @@ onMounted(() => {
                         class="bi  fs-5"
                         icon="mdi:arrow-right"
                       />
-                    </RouterLink>
+                    </NuxtLink>
                   </div>
                 </div>
               </div>
             </div>
-          </li>
+          </li> -->
         </ul>
       </div>
     </section>

@@ -74,7 +74,7 @@ onUnmounted(() => {
           <ul class="navbar-nav gap-4 ms-auto fw-bold">
             <li class="nav-item">
               <NuxtLink
-                to="/Rooms"
+                to="/rooms"
                 class="nav-link p-4 text-neutral-0"
               >
                 客房旅宿
@@ -123,7 +123,7 @@ onUnmounted(() => {
             <li class="nav-item">
               <NuxtLink
                 :to="{
-                  name: 'Rooms'
+                  name: 'rooms'
                 }"
                 class="btn btn-primary-100 px-8 py-4 text-white fw-bold border-0 rounded-3"
               >
