@@ -3,7 +3,10 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import BookingLoading from '@/components/rooms/BookingLoading.vue';
 import { Icon } from '@iconify/vue';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-tw'; // 引入中文本地化
 
+dayjs.locale('zh-tw');
 const router = useRouter();
 import { storeToRefs } from 'pinia';
 const Store = useStores()
@@ -20,18 +23,22 @@ const confirmBooking = () => {
   setTimeout(() => {
     isLoading.value = false;
     router.push({
-      name: 'booking-confirmation',
+      name: 'BookingConfirmation',
       params: {
-        bookingId: 'HH2302183151222'
+        bookingId: roomDetail.value._id
       }
     })
   }, 1500);
 }
 
+const formatDate = (date) => {
+  return dayjs(date).format('MM 月 DD 日 dddd');
+}
 </script>
 
 <template>
-  <main class="pt-18 pt-md-30 bg-neutral-120">
+  <ClientOnly>
+    <main class="pt-18 pt-md-30 bg-neutral-120">
     <section class="py-10 py-md-30 bg-primary-10">
       <div class="container">
         <button
@@ -60,7 +67,7 @@ const confirmBooking = () => {
                     <h3 class="title-deco mb-2 fs-7 fw-bold">
                       選擇房型
                     </h3>
-                    <p class="mb-0 fw-medium">
+                    <p class="mb-0 fw-medium" v-if="roomDetail">
                       {{ roomDetail.name }}
                     </p>
                   </div>
@@ -76,12 +83,12 @@ const confirmBooking = () => {
                     <h3 class="title-deco mb-2 fs-7 fw-bold">
                       訂房日期
                     </h3>
-                    <p class="mb-2 fw-medium">
-                      入住：{{ setBookingInfo.bookingInfo.date.start }}
+                    <p class="mb-2 fw-medium" v-if="setBookingInfo">
+                      入住：{{ formatDate(setBookingInfo.bookingInfo.date.start) }}
                       <!-- 入住：12 月 4 日星期二 -->
                     </p>
-                    <p class="mb-0 fw-medium">
-                      退房：{{ setBookingInfo.bookingInfo.date.end }}
+                    <p class="mb-0 fw-medium" v-if="setBookingInfo">
+                      退房：{{ formatDate(setBookingInfo.bookingInfo.date.end) }}
                       <!-- 退房：12 月 6 日星期三 -->
                     </p>
                   </div>
@@ -374,6 +381,8 @@ const confirmBooking = () => {
 
     <BookingLoading v-if="isLoading" />
   </main>
+  </ClientOnly>
+  
 </template>
 
 <style lang="scss" scoped>
