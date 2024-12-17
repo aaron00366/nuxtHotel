@@ -9,5 +9,6 @@ export default defineNuxtConfig({
     plugins: {
         autoprefixer: true
     }
-  }
+  },
+  modules: ["@pinia/nuxt"],
 })

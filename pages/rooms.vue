@@ -19,24 +19,24 @@ const importImage = (url) => {
   return image.href;
 }
 
-const roomImages = computed(() => {
-  const rooms = ['a', 'b', 'c', 'd'];
-  const nums = [1, 2, 3, 4, 5];
+// const roomImages = computed(() => {
+//   const rooms = ['a', 'b', 'c', 'd'];
+//   const nums = [1, 2, 3, 4, 5];
 
-  const result = rooms.reduce((acc, roomId) => {
-    acc[`room${roomId.toUpperCase()}`] = nums.reduce((obj, num) => {
-      obj[num] = {
-        desktop: importImage(`../assets/images/room-${roomId}-${num}.png`),
-        mobile: importImage(`../assets/images/room-${roomId}-sm-${num}.png`)
-      };
-      return obj;
-    }, {});
+//   const result = rooms.reduce((acc, roomId) => {
+//     acc[`room${roomId.toUpperCase()}`] = nums.reduce((obj, num) => {
+//       obj[num] = {
+//         desktop: importImage(`../assets/images/room-${roomId}-${num}.png`),
+//         mobile: importImage(`../assets/images/room-${roomId}-sm-${num}.png`)
+//       };
+//       return obj;
+//     }, {});
 
-    return acc;
-  }, {});
+//     return acc;
+//   }, {});
 
-  return result;
-})
+//   return result;
+// })
 onMounted(() => {
   console.log('rooms mounted');
 })
@@ -176,9 +176,9 @@ onMounted(() => {
                       NT$ {{ room.price }}
                     </p>
                     <NuxtLink
-                      :to="{
-                        name: 'RoomDetail',
-                      }"
+                      :to="
+                        `RoomDetail/${room._id} `
+                      "
                       class="icon-link icon-link-hover text-primary-100"
                     >
                       <Icon
