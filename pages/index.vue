@@ -21,14 +21,21 @@ const slidePrev = () => {
 const slideNext = () => {
   roomSwiper.value.$el.swiper.slideNext();
 }
+import { storeToRefs } from 'pinia';
+const Store = useStores()
+const { isLoading } = storeToRefs(Store)
+isLoading.value = true
 
 const { data:newsData } = await useFetch("https://nuxr3.zeabur.app/api/v1/home/news/");
 
 const { data:roomsData } = await useFetch("https://nuxr3.zeabur.app/api/v1/rooms/");
-// console.log(roomsData.value.result);
 
 const { data:culinaryData } = await useFetch("https://nuxr3.zeabur.app/api/v1/culinary/");
-console.log(culinaryData);
+onMounted(() => {
+  if (newsData && roomsData && culinaryData){
+    isLoading.value = false
+  }
+})
 </script>
 
 <template>
@@ -473,7 +480,7 @@ console.log(culinaryData);
               禮賓車服務
             </h5>
             <p class="mb-0 fs-8 fs-md-7">
-              承億酒店提供禮賓專車接送服務，但因目的地遠近會有不同的收費，請撥打電話將由專人為您服務洽詢專線：(07)123-4567
+              享樂酒店提供禮賓專車接送服務，但因目的地遠近會有不同的收費，請撥打電話將由專人為您服務洽詢專線：(07)123-4567
             </p>
           </div>
         </div>

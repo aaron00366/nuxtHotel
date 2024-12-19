@@ -12,13 +12,17 @@ import 'swiper/css/pagination';
 
 const modules = ref([Autoplay, Navigation, Pagination]);
 const { data:roomsData } = await useFetch("https://nuxr3.zeabur.app/api/v1/rooms/");
-console.log(roomsData.value.result);
+// console.log(roomsData.value)
 
 const importImage = (url) => {
   const image = new URL(url, import.meta.url);
   return image.href;
 }
 
+import { storeToRefs } from 'pinia';
+const Store = useStores()
+const { isLoading } = storeToRefs(Store)
+isLoading.value = true
 // const roomImages = computed(() => {
 //   const rooms = ['a', 'b', 'c', 'd'];
 //   const nums = [1, 2, 3, 4, 5];
@@ -38,7 +42,9 @@ const importImage = (url) => {
 //   return result;
 // })
 onMounted(() => {
-  console.log('rooms mounted');
+  if (roomsData.value.result) {
+    isLoading.value = false
+  }
 })
 
 </script>

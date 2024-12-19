@@ -10,7 +10,7 @@ dayjs.locale('zh-tw');
 const router = useRouter();
 import { storeToRefs } from 'pinia';
 const Store = useStores()
-const { roomDetail, setBookingInfo } = storeToRefs(Store)
+const { roomDetail, setBookingInfo, isLoading } = storeToRefs(Store)
 console.log(setBookingInfo.value)
 const userInfo = ref({
     address: {
@@ -24,10 +24,10 @@ const userInfo = ref({
 const goBack = () => {
   router.back();
 }
-const isLoading = ref(false);
+const isLoadingDialod = ref(false);
 
 const confirmBooking = async () => {
-  isLoading.value = true;
+  isLoadingDialod.value = true;
   const { data } = await useFetch('https://nuxr3.zeabur.app/api/v1/orders/',{
     method: "POST", 
     body: {
@@ -40,7 +40,7 @@ const confirmBooking = async () => {
   });
 console.log('確認訂房的資料 ==>',data.value)
   setTimeout(() => {
-    isLoading.value = false;
+    isLoadingDialod.value = false;
     router.push(`/BookingConfirm/${roomDetail.value._id}`);
   }, 1500);
 }
@@ -412,7 +412,7 @@ watch(selectedCity, (newCity) => {
       </div>
     </section>
 
-    <BookingLoading v-if="isLoading" />
+    <BookingLoading v-if="isLoadingDialod" />
   </main>
   </ClientOnly>
 </template>

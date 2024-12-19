@@ -13,7 +13,8 @@ const openModal = () => {
 // pinia
 import { storeToRefs } from 'pinia';
 const Store = useStores()
-const { roomDetail, setBookingInfo } = storeToRefs(Store)
+const { roomDetail, setBookingInfo, isLoading } = storeToRefs(Store)
+isLoading.value = true
 
 roomDetail.value = roomData.value.result
 let MAX_BOOKING_PEOPLE = ref(0);
@@ -56,10 +57,13 @@ const comfirmRoom = () => {
   })
 }
 onMounted(() => {
-  setBookingInfo.value = {}
-  roomDetail.value = []
-  roomDetail.value = roomData.value.result
-  MAX_BOOKING_PEOPLE.value = roomDetail.value.maxPeople
+  if (roomData.value.result) {
+    isLoading.value = false
+    setBookingInfo.value = {}
+    roomDetail.value = []
+    roomDetail.value = roomData.value.result
+    MAX_BOOKING_PEOPLE.value = roomDetail.value.maxPeople
+  }
 })
 
 </script>

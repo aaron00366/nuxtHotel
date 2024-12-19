@@ -11,8 +11,9 @@ export default defineNuxtConfig({
     }
   },
   modules: ["@pinia/nuxt"],
-
-  // seo meta tag
+  plugins: [
+    '~/plugins/vue-loading-overlay.client.js'
+  ],
   app:{
     head: {
       title: '享樂酒店',
@@ -35,7 +36,7 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        // { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
       ]
     },
   }
