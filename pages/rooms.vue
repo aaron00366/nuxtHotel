@@ -47,6 +47,18 @@ onMounted(() => {
   }
 })
 
+  // 設置 SEO 屬性
+  useHead({
+  title: '房型選擇 - 你的網站名稱',
+  meta: [
+    { name: 'description', content: '在這裡選擇您喜愛的房型，享受舒適的住宿體驗。' },
+    { name: 'keywords', content: '房型選擇, 酒店, 住宿, 舒適' },
+    { property: 'og:title', content: '房型選擇 - 享樂酒店' },
+    { property: 'og:description', content: '在這裡選擇您喜愛的房型，享受舒適的住宿體驗。' },
+    { property: 'og:image', content: '../assets/images/home-about.png' },
+    { property: 'og:url', content: '../assets/images/home-about.png' }
+  ]
+});
 </script>
 
 <template>
