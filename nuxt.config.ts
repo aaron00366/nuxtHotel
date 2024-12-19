@@ -11,4 +11,28 @@ export default defineNuxtConfig({
     }
   },
   modules: ["@pinia/nuxt"],
+
+  // seo meta tag
+  app:{
+    head: {
+      title: '享樂酒店',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: '享樂酒店' },
+        { name: 'keywords', content: '酒店, 享樂, 住宿, 旅遊' },
+        { name: 'author', content: '享樂酒店' },
+        { name: 'robots', content: 'index, follow' },
+        { property: 'og:title', content: '享樂酒店' },
+        { property: 'og:description', content: '享樂酒店提供最舒適的住宿體驗' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: 'https://www.example.com' },
+        { property: 'og:image', content: '../nuxtHotel/assets/images/home-about.png' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: '享樂酒店' },
+        { name: 'twitter:description', content: '享樂酒店提供最舒適的住宿體驗' },
+        { name: 'twitter:image', content: '../nuxtHotel/assets/images/home-about.png' },
+      ]
+    },
+  }
 })

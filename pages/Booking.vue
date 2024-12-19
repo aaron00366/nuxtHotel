@@ -12,22 +12,36 @@ import { storeToRefs } from 'pinia';
 const Store = useStores()
 const { roomDetail, setBookingInfo } = storeToRefs(Store)
 console.log(setBookingInfo.value)
+const userInfo = ref({
+    address: {
+      zipcode: '',
+      detail: ""
+    },
+    name: "",
+    phone: "",
+    email: ""
+  })
 const goBack = () => {
   router.back();
 }
 const isLoading = ref(false);
 
-const confirmBooking = () => {
+const confirmBooking = async () => {
   isLoading.value = true;
-
+  const { data } = await useFetch('https://nuxr3.zeabur.app/api/v1/orders/',{
+    method: "POST", 
+    body: {
+      roomId: roomDetail.value._id,
+      checkInDate: setBookingInfo.value.bookingInfo.date.start,
+      checkOutDate: setBookingInfo.value.bookingInfo.date.end,
+      peopleNum: setBookingInfo.value.bookingPeople,
+      userInfo:userInfo.value
+    },  
+  });
+console.log('確認訂房的資料 ==>',data.value)
   setTimeout(() => {
     isLoading.value = false;
-    router.push({
-      name: 'BookingConfirmation',
-      params: {
-        bookingId: roomDetail.value._id
-      }
-    })
+    router.push(`/BookingConfirm/${roomDetail.value._id}`);
   }, 1500);
 }
 
@@ -180,7 +194,7 @@ watch(selectedCity, (newCity) => {
                     id="name"
                     type="text"
                     class="form-control p-4 fs-8 fs-md-7 rounded-3"
-                    placeholder="請輸入姓名"
+                    placeholder="請輸入姓名" v-model="userInfo.name"
                   >
                 </div>
 
@@ -193,7 +207,7 @@ watch(selectedCity, (newCity) => {
                     id="phone"
                     type="tel"
                     class="form-control p-4 fs-8 fs-md-7 rounded-3"
-                    placeholder="請輸入手機號碼"
+                    placeholder="請輸入手機號碼" v-model="userInfo.phone"
                   >
                 </div>
 
@@ -206,7 +220,7 @@ watch(selectedCity, (newCity) => {
                     id="email"
                     type="email"
                     class="form-control p-4 fs-8 fs-md-7 rounded-3"
-                    placeholder="請輸入電子信箱"
+                    placeholder="請輸入電子信箱" v-model="userInfo.email"
                   >
                 </div>
 
@@ -235,7 +249,7 @@ watch(selectedCity, (newCity) => {
                     id="address"
                     type="text"
                     class="form-control p-4 fs-8 fs-md-7 rounded-3"
-                    placeholder="請輸入詳細地址"
+                    placeholder="請輸入詳細地址" v-model="userInfo.address.detail"
                   >
                 </div>
               </div>
@@ -401,7 +415,6 @@ watch(selectedCity, (newCity) => {
     <BookingLoading v-if="isLoading" />
   </main>
   </ClientOnly>
-  
 </template>
 
 <style lang="scss" scoped>
