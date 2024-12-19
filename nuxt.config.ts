@@ -16,9 +16,9 @@ export default defineNuxtConfig({
   app:{
     head: {
       title: '享樂酒店',
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
       meta: [
-        { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: '享樂酒店' },
         { name: 'keywords', content: '酒店, 享樂, 住宿, 旅遊' },
         { name: 'author', content: '享樂酒店' },
