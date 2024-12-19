@@ -427,7 +427,7 @@ console.log(culinaryData);
             <p class="text-neutral-40 fw-bold">
               台灣高雄市新興區六角路123號
             </p>
-            <picture>
+            <!-- <picture>
               <source
                 srcset="@/assets/images/home-map.png"
                 media="(min-width: 576px)"
@@ -437,7 +437,8 @@ console.log(culinaryData);
                 src="@/assets/images/home-map-sm.png"
                 alt="描述地圖中酒店所在的位置"
               >
-            </picture>
+            </picture> -->
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3850.778027242252!2d120.30634349058508!3d22.68616867256751!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346e056fdf0bfa69%3A0x21aec53e9d5ec9a6!2z6auY6ZC15bem54ef56uZ!5e0!3m2!1szh-TW!2stw!4v1734578955196!5m2!1szh-TW!2stw" class="w-100 rounded-3" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
           <div class="col-12 col-md-4 text-neutral-0">
             <Icon
