@@ -32,6 +32,10 @@ export default defineNuxtConfig({
         { name: 'twitter:title', content: '享樂酒店' },
         { name: 'twitter:description', content: '享樂酒店提供最舒適的住宿體驗' },
         { name: 'twitter:image', content: '../nuxtHotel/assets/images/home-about.png' },
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        // { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
       ]
     },
   }
