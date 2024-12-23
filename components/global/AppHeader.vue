@@ -106,9 +106,9 @@ const logout = () => {
                   style="right: 0; left: auto; border-radius: 20px;"
                 >
                   <li>
-                    <button
-                      class="dropdown-item px-6 py-4"
-                    >我的帳戶</button>
+                    <NuxtLink to="/User/UserProfile"
+                      class="dropdown-item px-6 py-4" 
+                    >我的帳戶</NuxtLink>
                   </li>
                   <li>
                     <button
