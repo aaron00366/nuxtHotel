@@ -7,7 +7,7 @@ const Store = useStores()
 const { token,userInfo } = storeToRefs(Store)
 // import 'bootstrap/js/dist/collapse';
 // import 'bootstrap/js/dist/dropdown';
-console.log(userInfo)
+const router = useRouter();
 const route = useRoute();
 const transparentBgRoute = ['home', 'rooms'];
 
@@ -28,6 +28,12 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
 })
 
+const logout = () => {
+  console.log('logout')
+  token.value = ''
+  userInfo.value = {}
+  router.push('/Account/AccountLogin')
+}
 </script>
 
 <template>
@@ -100,16 +106,14 @@ onUnmounted(() => {
                   style="right: 0; left: auto; border-radius: 20px;"
                 >
                   <li>
-                    <a
+                    <button
                       class="dropdown-item px-6 py-4"
-                      href="#"
-                    >我的帳戶</a>
+                    >我的帳戶</button>
                   </li>
                   <li>
-                    <a
-                      class="dropdown-item px-6 py-4"
-                      href="#"
-                    >登出</a>
+                    <button
+                      class="dropdown-item px-6 py-4" @click="logout"
+                    >登出</button>
                   </li>
                 </ul>
               </div>

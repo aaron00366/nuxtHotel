@@ -10,7 +10,8 @@ export default defineNuxtConfig({
         autoprefixer: true
     }
   },
-  modules: ["@pinia/nuxt"],
+  modules: ["@pinia/nuxt",
+    'pinia-plugin-persistedstate/nuxt',],
   plugins: [
     '~/plugins/vue-loading-overlay.client.js'
   ],

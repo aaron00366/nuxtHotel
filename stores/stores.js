@@ -13,5 +13,10 @@ export const useStores = defineStore("news", () => {
         token,
         userInfo
     }
-   });
+   },
+   {
+    persist: true,
+    storage: piniaPluginPersistedstate.localStorage(),
+  },
+);
    
