@@ -1,5 +1,7 @@
 <script setup>
-
+import { storeToRefs } from 'pinia';
+const Store = useStores()
+const { userInfo } = storeToRefs(Store)
 </script>
 
 <template>
@@ -25,7 +27,7 @@
             alt="avatar"
           >
           <h1 class="text-neutral-0 fw-bold">
-            Hello，Jessica
+            Hello，{{ userInfo.name }}
           </h1>
         </div>
       </div>

@@ -1,5 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+const Store = useStores()
+const { userInfo } = storeToRefs(Store)
 
 const isEditPassword = ref(false);
 const isEditProfile = ref(false);
@@ -19,7 +21,7 @@ const isEditProfile = ref(false);
             </p>
             <span
               class="form-control pe-none p-0 text-neutral-100 fw-bold border-0"
-            >Jessica@exsample.com</span>
+            >{{ userInfo.email }}</span>
           </div>
 
           <div
