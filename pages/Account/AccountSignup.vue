@@ -58,14 +58,11 @@ watch([selectedYear, selectedMonth, selectedDay], () => {
 
 const signUp = async () => {
     userInfo.value.address.zipcode = postalCode.value;
-    console.log(userInfo.value);
     
     const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/user/signup`,{
         method: "POST", 
-        body: userInfo.value  
-        // body: JSON.stringify(userInfo.value)  
+        body: userInfo.value   
     });
-    console.log(data);
 };
 </script>
 

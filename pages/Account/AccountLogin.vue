@@ -1,12 +1,33 @@
 <script setup>
+import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 const Store = useStores()
-const { isLoading } = storeToRefs(Store)
+const { isLoading,token,userInfo } = storeToRefs(Store)
+const router = useRouter();
+const loginData = ref({
+    email: '',
+    password: '',
+})
 isLoading.value = false
-
 onMounted(() => {
   isLoading.value = false
 })
+const submitLogin = async () => {
+  const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/user/login`,{
+        method: "POST", 
+        body: loginData.value   
+    });
+    // console.log(data.value)
+    if(data.value.status == true){
+        token.value = data.value.token
+        userInfo.value = data.value.result
+        router.push('/')
+        console.log('token',token.value)
+        console.log('userInfo',userInfo.value)
+    }else{
+        alert('帳號或密碼錯誤')
+    }
+}
 </script>
 
 <template>
@@ -31,9 +52,9 @@ onMounted(() => {
         <input
           id="email"
           class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
-          value="jessica@sample.com"
           placeholder="請輸入信箱"
-          type="email"
+          type="email" 
+          v-model="loginData.email"
         >
       </div>
       <div class="mb-4 fs-8 fs-md-7">
@@ -44,11 +65,11 @@ onMounted(() => {
           密碼
         </label>
         <input
-          id="password"
-          class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
-          value="jessica@sample.com"
-          placeholder="請輸入密碼"
-          type="password"
+            id="password"
+            class="form-control p-4 text-neutral-100  fw-medium border-neutral-40"
+            placeholder="請輸入密碼"
+            type="password"
+            v-model="loginData.password"
         >
       </div>
       <div class="d-flex justify-content-between align-items-center mb-10 fs-8 fs-md-7">
@@ -57,7 +78,6 @@ onMounted(() => {
             id="remember"
             class="form-check-input"
             type="checkbox"
-            value=""
           >
           <label
             class="form-check-label fw-bold"
@@ -75,7 +95,7 @@ onMounted(() => {
       </div>
       <button
         class="btn btn-primary-100 w-100 py-4 text-neutral-0 fw-bold"
-        type="button"
+        type="button" @click="submitLogin"
       >
         會員登入
       </button>

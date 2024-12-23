@@ -1,11 +1,13 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue';
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue';
-
+import { storeToRefs } from 'pinia';
+const Store = useStores()
+const { token,userInfo } = storeToRefs(Store)
 // import 'bootstrap/js/dist/collapse';
 // import 'bootstrap/js/dist/dropdown';
-
+console.log(userInfo)
 const route = useRoute();
 const transparentBgRoute = ['home', 'rooms'];
 
@@ -91,7 +93,7 @@ onUnmounted(() => {
                     class="fs-5"
                     icon="mdi:account-circle-outline"
                   />
-                  Jessica
+                  {{ userInfo.name }}
                 </button>
                 <ul
                   class="dropdown-menu py-3 overflow-hidden"
