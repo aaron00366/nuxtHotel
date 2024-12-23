@@ -128,9 +128,7 @@ const logout = () => {
             </li>
             <li class="nav-item">
               <NuxtLink
-                :to="{
-                  name: 'rooms'
-                }"
+                to="/rooms"
                 class="btn btn-primary-100 px-8 py-4 text-white fw-bold border-0 rounded-3"
               >
                 立即訂房

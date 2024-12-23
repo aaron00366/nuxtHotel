@@ -11,9 +11,9 @@ dayjs.locale('zh-tw');
 const router = useRouter();
 import { storeToRefs } from 'pinia';
 const Store = useStores()
-const { roomDetail, setBookingInfo, isLoading } = storeToRefs(Store)
+const { roomDetail, setBookingInfo, isLoading,userInfo } = storeToRefs(Store)
 console.log(setBookingInfo.value)
-const userInfo = ref({
+const tempUserInfo = ref({
     address: {
       zipcode: '',
       detail: ""
@@ -29,15 +29,16 @@ const isLoadingDialod = ref(false);
 
 const confirmBooking = async () => {
   isLoadingDialod.value = true;
-  const { data } = await useFetch('https://nuxr3.zeabur.app/api/v1/orders/',{
-    method: "POST", 
-    body: {
+  const body = {
       roomId: roomDetail.value._id,
       checkInDate: setBookingInfo.value.bookingInfo.date.start,
       checkOutDate: setBookingInfo.value.bookingInfo.date.end,
       peopleNum: setBookingInfo.value.bookingPeople,
-      userInfo:userInfo.value
-    },  
+      userInfo:tempUserInfo.value
+    }
+  const { data } = await useFetch('https://nuxr3.zeabur.app/api/v1/orders/',{
+    method: "POST", 
+    body
   });
 console.log('確認訂房的資料 ==>',data.value)
   setTimeout(() => {
@@ -69,6 +70,20 @@ watch(selectedDistrict, (newDistrict) => {
   const district = districts.value.find(district => district.name === newDistrict);
   postalCode.value = district ? district.postalCode : '';
 });
+
+const applyUserInfo = () => {
+  tempUserInfo.value = {
+    address: {
+      zipcode: userInfo.value.address.zipcode,
+      detail: userInfo.value.address.detail
+    },
+    name: userInfo.value.name,
+    phone: userInfo.value.phone,
+    email: userInfo.value.email
+  }
+  selectedCity.value = userInfo.value.address.city;
+  selectedDistrict.value = userInfo.value.address.county;
+}
 </script>
 
 <template>
@@ -162,7 +177,7 @@ watch(selectedDistrict, (newDistrict) => {
                 </h2>
                 <button
                   class="text-primary-100 bg-transparent border-0 fw-bold text-decoration-underline"
-                  type="button"
+                  type="button" @click="applyUserInfo"
                 >
                   套用會員資料
                 </button>
@@ -178,7 +193,7 @@ watch(selectedDistrict, (newDistrict) => {
                     id="name"
                     type="text"
                     class="form-control p-4 fs-8 fs-md-7 rounded-3"
-                    placeholder="請輸入姓名" v-model="userInfo.name"
+                    placeholder="請輸入姓名" v-model="tempUserInfo.name"
                   >
                 </div>
 
@@ -191,7 +206,7 @@ watch(selectedDistrict, (newDistrict) => {
                     id="phone"
                     type="tel"
                     class="form-control p-4 fs-8 fs-md-7 rounded-3"
-                    placeholder="請輸入手機號碼" v-model="userInfo.phone"
+                    placeholder="請輸入手機號碼" v-model="tempUserInfo.phone"
                   >
                 </div>
 
@@ -204,7 +219,7 @@ watch(selectedDistrict, (newDistrict) => {
                     id="email"
                     type="email"
                     class="form-control p-4 fs-8 fs-md-7 rounded-3"
-                    placeholder="請輸入電子信箱" v-model="userInfo.email"
+                    placeholder="請輸入電子信箱" v-model="tempUserInfo.email"
                   >
                 </div>
 
@@ -233,7 +248,7 @@ watch(selectedDistrict, (newDistrict) => {
                     id="address"
                     type="text"
                     class="form-control p-4 fs-8 fs-md-7 rounded-3"
-                    placeholder="請輸入詳細地址" v-model="userInfo.address.detail"
+                    placeholder="請輸入詳細地址" v-model="tempUserInfo.address.detail"
                   >
                 </div>
               </div>
