@@ -32,8 +32,10 @@ import AppHeader from '@/components/global/AppHeader.vue';
 import AppFooter from '@/components/global/AppFooter.vue';
 import { storeToRefs } from 'pinia';
 const Store = useStores()
-const { roomDetail, setBookingInfo, isLoading } = storeToRefs(Store)
-isLoading.value = true
+const { isLoading } = storeToRefs(Store)
+onMounted(() => {
+  isLoading.value = false
+})
 </script>
 <style scoped>
 @keyframes ldio-yzaezf3dcmj {

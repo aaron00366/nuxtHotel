@@ -54,12 +54,20 @@ const formatDate = (date) => {
 const selectedCity = ref('高雄市');
 const selectedDistrict = ref('新興區');
 const districts = ref(cities.find(city => city.name === selectedCity.value).districts);
+const postalCode = ref(districts.value.find(district => district.name === selectedDistrict.value).postalCode);
 
 // 監聽縣市選擇的變化
 watch(selectedCity, (newCity) => {
   const city = cities.find(city => city.name === newCity);
   districts.value = city ? city.districts : [];
-  selectedDistrict.value = districts.value[0];
+  selectedDistrict.value = districts.value[0].name;
+  postalCode.value = districts.value[0].postalCode;
+});
+
+// 監聽區域選擇的變化
+watch(selectedDistrict, (newDistrict) => {
+  const district = districts.value.find(district => district.name === newDistrict);
+  postalCode.value = district ? district.postalCode : '';
 });
 </script>
 
@@ -216,8 +224,8 @@ watch(selectedCity, (newCity) => {
                     <select v-model="selectedDistrict"
                       class="form-select w-50 p-4 text-neutral-80 fs-8 fs-md-7 fw-medium rounded-3"
                     >
-                    <option v-for="district in districts" :key="district" :value="district">
-                    {{ district }}
+                    <option v-for="district in districts" :key="district" :value="district.name">
+                    {{ district.name }}
                   </option>
                     </select>
                   </div>
