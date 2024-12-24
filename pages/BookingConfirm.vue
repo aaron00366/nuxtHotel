@@ -5,9 +5,7 @@ import { storeToRefs } from 'pinia';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-tw'; // 引入中文本地化
 const Store = useStores()
-const { roomDetail, setBookingInfo, isLoading,userInfo } = storeToRefs(Store)
-console.log('roomDetail',roomDetail.value)
-console.log('setBookingInfo =>' ,setBookingInfo.value)
+const { roomDetail, setBookingInfo,userInfo, BookingConfirmData } = storeToRefs(Store)
 const route = useRoute();
 const { bookingId } = route.params;
 const formatDate = (date) => {
@@ -27,7 +25,7 @@ const formatDate = (date) => {
             />
             <div class="text-neutral-0 fs-1">
               <h1 class="fw-bold">
-                恭喜，{{ userInfo.name }}！
+                恭喜，{{ BookingConfirmData.userInfo.name }}！
               </h1>
               <p class="mb-0 fw-bold">
                 您已預訂成功
@@ -38,19 +36,19 @@ const formatDate = (date) => {
             我們已發送訂房資訊及詳細內容至你的電子信箱，入住時需向櫃檯人員出示訂房人證件。
           </p>
 
-          <!-- <hr class="my-10 my-md-20 opacity-100  text-neutral-40">
+          <hr class="my-10 my-md-20 opacity-100  text-neutral-40">
 
           <div class="d-flex flex-column align-items-md-start">
             <h2 class="mb-6 mb-md-10 text-neutral-0 fs-7 fs-md-5 fw-bold">
               立即查看您的訂單紀錄
             </h2>
-            <button
+            <NuxtLink
               class="btn btn-primary-100 px-md-15 py-4 text-neutral-0 fw-bold border-0 rounded-3"
-              type="button"
+              to="/User/UserOrder"
             >
               前往我的訂單
-            </button>
-          </div> -->
+            </NuxtLink>
+          </div>
 
           <hr class="my-10 my-md-20 opacity-100  text-neutral-40">
 
@@ -64,19 +62,19 @@ const formatDate = (date) => {
               <p class="mb-2 text-neutral-40 fw-medium">
                 姓名
               </p>
-              <span class="text-neutral-0 fw-bold">{{ userInfo.name }}</span>
+              <span class="text-neutral-0 fw-bold">{{ BookingConfirmData.userInfo.name }}</span>
             </div>
             <div>
               <p class="mb-2 text-neutral-40 fw-medium">
                 手機號碼
               </p>
-              <span class="text-neutral-0 fw-bold">+886 {{ userInfo.phone }}</span>
+              <span class="text-neutral-0 fw-bold">+886 {{ BookingConfirmData.userInfo.phone }}</span>
             </div>
             <div>
               <p class="mb-2 text-neutral-40 fw-medium">
                 電子信箱
               </p>
-              <span class="text-neutral-0 fw-bold">{{ userInfo.email }}</span>
+              <span class="text-neutral-0 fw-bold">{{ BookingConfirmData.userInfo.email }}</span>
             </div>
           </div>
         </div>
@@ -88,7 +86,7 @@ const formatDate = (date) => {
           >
             <div>
               <p class="mb-2 text-neutral-80 fs-8 fs-md-7 fw-medium">
-                預訂參考編號： {{ bookingId }}
+                預訂參考編號： {{ BookingConfirmData._id }}
               </p>
               <h2 class="mb-0 text-neutral-100 fs-7 fs-md-5 fw-bold">
                 即將來的行程
@@ -97,37 +95,37 @@ const formatDate = (date) => {
 
             <img
               class="img-fluid rounded-3"
-              src="@/assets/images/room-a-1.png"
+              :src="BookingConfirmData.roomId.imageUrl"
               alt="room-a"
             >
 
             <section class="d-flex flex-column gap-6">
               <h3 class="d-flex align-items-center mb-6 text-neutral-80 fs-8 fs-md-6 fw-bold">
                 <p class="mb-0">
-                  {{ roomDetail.name }}，{{ setBookingInfo.bookingInfo.daysCount }} 晚
+                  {{ BookingConfirmData.roomId.name }}，{{ setBookingInfo.bookingInfo.daysCount }} 晚
                 </p>
                 <span
                   class="d-inline-block mx-4 bg-neutral-80"
                   style="width: 1px;height: 18px;"
                 />
                 <p class="mb-0">
-                  住宿人數：{{ setBookingInfo.bookingPeople }} 位
+                  住宿人數：{{ BookingConfirmData.propleNum }} 位
                 </p>
               </h3>
 
               <div class="text-neutral-80 fs-8 fs-md-7 fw-bold">
                 <p class="title-deco mb-2">
-                  入住：{{ formatDate(setBookingInfo.bookingInfo.date.start) }}，15:00 可入住
+                  入住：{{ formatDate(BookingConfirmData.checkInDate) }}，15:00 可入住
                 </p>
                 <p
                   class="title-deco mb-0"
                 >
-                  退房：{{ formatDate(setBookingInfo.bookingInfo.date.end) }}，12:00 前退房
+                  退房：{{ formatDate(BookingConfirmData.checkOutDate) }}，12:00 前退房
                 </p>
               </div>
 
               <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
-                NT$ {{ Number(roomDetail.price) }}
+                NT$ {{ Number(BookingConfirmData.roomId.price) }}
               </p>
             </section>
 
@@ -138,7 +136,7 @@ const formatDate = (date) => {
                 房內設備
               </h3>
               <ul class="d-flex flex-wrap row-gap-2 column-gap-10 p-6 mb-0 fs-8 fs-md-7 bg-neutral-0 border border-neutral-40 rounded-3 list-unstyled">
-                <li class="flex-item d-flex gap-2" v-for="facility in roomDetail.facilityInfo" :key="facility.title">
+                <li class="flex-item d-flex gap-2" v-for="facility in BookingConfirmData.roomId.facilityInfo" :key="facility.title">
                   <Icon
                     class="fs-5 text-primary-100"
                     icon="material-symbols:check"
@@ -155,7 +153,7 @@ const formatDate = (date) => {
                 備品提供
               </h3>
               <ul class="d-flex flex-wrap row-gap-2 column-gap-10 p-6 mb-0 fs-8 fs-md-7 bg-neutral-0 border border-neutral-40 rounded-3 list-unstyled">
-                <li class="flex-item d-flex gap-2" v-for="amenity in roomDetail.amenityInfo" :key="amenity.title">
+                <li class="flex-item d-flex gap-2" v-for="amenity in BookingConfirmData.roomId.amenityInfo" :key="amenity.title">
                   <Icon
                     class="fs-5 text-primary-100"
                     icon="material-symbols:check"

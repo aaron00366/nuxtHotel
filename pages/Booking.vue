@@ -11,7 +11,7 @@ dayjs.locale('zh-tw');
 const router = useRouter();
 import { storeToRefs } from 'pinia';
 const Store = useStores()
-const { roomDetail, setBookingInfo, isLoading,userInfo } = storeToRefs(Store)
+const { roomDetail, setBookingInfo, isLoading,userInfo, BookingConfirmData } = storeToRefs(Store)
 console.log(setBookingInfo.value)
 const tempUserInfo = ref({
     address: {
@@ -36,11 +36,16 @@ const confirmBooking = async () => {
       peopleNum: setBookingInfo.value.bookingPeople,
       userInfo:tempUserInfo.value
     }
+  const getUserCookie = useCookie("auth");
+
   const { data } = await useFetch('https://nuxr3.zeabur.app/api/v1/orders/',{
     method: "POST", 
-    body
+    body,
+    headers: {
+      Authorization: `Bearer ${getUserCookie.value}`
+    }
   });
-console.log('確認訂房的資料 ==>',data.value)
+  BookingConfirmData.value = data.value.result
   setTimeout(() => {
     isLoadingDialod.value = false;
     router.push(`/BookingConfirm/${roomDetail.value._id}`);

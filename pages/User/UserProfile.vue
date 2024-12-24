@@ -5,6 +5,11 @@ const { userInfo } = storeToRefs(Store)
 
 const isEditPassword = ref(false);
 const isEditProfile = ref(false);
+const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/user`)
+console.log(data.value)
+onMounted( async () => {
+
+})
 </script>
 
 <template>

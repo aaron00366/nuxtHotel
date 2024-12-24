@@ -16,17 +16,23 @@ const submitLogin = async () => {
   const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/user/login`,{
         method: "POST", 
         body: loginData.value   
-    });
-    // console.log(data.value)
-    if(data.value.status == true){
-        token.value = data.value.token
-        userInfo.value = data.value.result
+    })
+    .then((data) => {
+        const { token } = data.data.value
+        const { result } = data.data.value
+        const cookie = useCookie("auth", {
+        // expires: new Date(exp * 1000),
+        path: "/",
+      });
+        cookie.value = token;
+        userInfo.value = result
+        alert("登入成功");
         router.push('/')
-        console.log('token',token.value)
-        console.log('userInfo',userInfo.value)
-    }else{
-        alert('帳號或密碼錯誤')
-    }
+    })
+    .catch((error) => {
+        loginData.value = {}
+        alert("帳號或密碼錯誤");
+    });
 }
 </script>
 

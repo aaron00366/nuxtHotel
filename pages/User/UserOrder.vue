@@ -1,5 +1,4 @@
 <script setup>
-import { RouterLink } from 'vue-router';
 import { Icon } from '@iconify/vue';
 
 import 'bootstrap/js/dist/modal';
@@ -267,18 +266,13 @@ const roomId = 'a';  // for navigation demo
           >
             取消預訂
           </button>
-          <RouterLink
-            :to="{
-              name: 'room-detail',
-              params: {
-                roomId
-              }
-            }"
+          <NuxtLink
+            to="/RoomDetail"
             class="btn btn-primary-100 text-neutral-0 w-50 py-4 fw-bold"
             type="button"
           >
             查看詳情
-          </RouterLink>
+          </NuxtLink>
         </div>
       </div>
     </div>

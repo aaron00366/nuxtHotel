@@ -6,12 +6,14 @@ export const useStores = defineStore("news", () => {
     let isLoading = ref(false);
     let token = ref('');
     let userInfo = ref({});
+    let BookingConfirmData = ref({});
     return {
         roomDetail,
         setBookingInfo,
         isLoading,
         token,
-        userInfo
+        userInfo,
+        BookingConfirmData
     }
    },
    {
