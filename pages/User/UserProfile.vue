@@ -5,10 +5,16 @@ const { userInfo } = storeToRefs(Store)
 
 const isEditPassword = ref(false);
 const isEditProfile = ref(false);
-const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/user`)
-console.log(data.value)
-onMounted( async () => {
 
+onMounted( async () => {
+  const getUserCookie = useCookie("auth");
+
+  const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/user`,{
+    headers: {
+      Authorization: `Bearer ${getUserCookie.value}`
+    }
+  })
+  // console.log(data.value)
 })
 </script>
 

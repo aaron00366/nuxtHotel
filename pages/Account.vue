@@ -2,7 +2,6 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { Icon } from '@iconify/vue';
 import { storeToRefs } from 'pinia';
-import { onMounted } from 'vue';
 const Store = useStores()
 const { isLoading } = storeToRefs(Store)
 isLoading.value = false
