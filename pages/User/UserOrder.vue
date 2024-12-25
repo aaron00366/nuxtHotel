@@ -1,16 +1,27 @@
 <script setup>
 import { Icon } from '@iconify/vue';
-import 'bootstrap/js/dist/modal';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-tw'; // 引入中文本地化
+// import 'bootstrap/js/dist/modal';
+import CancelModal from '@/components/CancelModal.vue';
+const cancelOrderModal = ref(null);
+const openModal = () => {
+  cancelOrderModal.value.openModal();
+}
+// const { $bootstrap } = useNuxtApp();
 const result = ref(null);
 const recentOrder = ref(null);
+
 const formatDate = (date) => {
   return dayjs(date).format('MM 月 DD 日 dddd');
 }
-onMounted( async () => {
+onMounted(() => {
+  getOrder();
+
+});
+
+const getOrder = async () => {
   const getUserCookie = useCookie("auth");
-  console.log('userOrder mounted')
   const { data } = await useFetch("https://nuxr3.zeabur.app/api/v1/orders/",{
     headers: {
       Authorization: `Bearer ${getUserCookie.value}`
@@ -18,16 +29,31 @@ onMounted( async () => {
   });
   result.value = data.value.result;
   console.log(result.value);
+  const ordersLength = result.value.length;
   if (result.value.length === 0) {
     return;
   }
-  recentOrder.value = result.value[0];
+  recentOrder.value = result.value[ordersLength - 1];
   console.log(recentOrder.value);
-});
+}
+
+const cancelOrder = async () => {
+  console.log('點刪除');
+  const getUserCookie = useCookie("auth");
+  const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/orders/${recentOrder.value._id}/`,{
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${getUserCookie.value}`
+    }
+  });
+  console.log(data.value);
+  getOrder();
+}
 </script>
 
 <template>
-  <ClientOnly>
+  <div>
+    <ClientOnly>
     <div class="row gap-6 gap-md-0">
       <div class="col-12 col-md-7">
       <div
@@ -46,7 +72,7 @@ onMounted( async () => {
 
         <img
           class="img-fluid rounded-3"
-          src="@/assets/images/room-a-1.png"
+          :src="recentOrder.roomId.imageUrl"
           alt="room-a"
         >
 
@@ -118,8 +144,7 @@ onMounted( async () => {
 
         <div class="d-flex gap-4">
           <button
-            data-bs-toggle="modal"
-            data-bs-target="#cancelModal"
+            @click="openModal"
             class="btn btn-outline-primary-100 w-50 py-4 fw-bold"
             style="--bs-btn-hover-color: #fff"
             type="button"
@@ -149,7 +174,7 @@ onMounted( async () => {
           <img
             class="img-fluid object-fit-cover rounded-3"
             style="max-width: 120px; height: 80px;"
-            src="@/assets/images/room-b-sm-1.png"
+            :src="resultObj.roomId.imageUrl"
             alt="room-a"
           >
           <section class="d-flex flex-column gap-4">
@@ -201,10 +226,11 @@ onMounted( async () => {
       </div>
     </div>
     </div>
-    <div
+    <!-- modal -->
+    <!-- <div
       id="cancelModal"
       class="modal fade"
-      tabindex="-1"
+      tabindex="-1" ref="modalRef"
     >
       <div class="modal-dialog modal-dialog-centered align-items-end align-items-md-center m-0 mx-md-auto h-100">
         <div class="modal-content">
@@ -230,16 +256,17 @@ onMounted( async () => {
             </button>
             <button
               type="button"
-              class="btn btn-primary-100 flex-grow-1 m-0 py-4 text-white fw-bold"
+              class="btn btn-primary-100 flex-grow-1 m-0 py-4 text-white fw-bold" @click="cancelOrder"
             >
               確定取消
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
+    <CancelModal ref="cancelOrderModal"/>
   </ClientOnly>
-  
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -287,13 +314,13 @@ $grid-breakpoints: (
 }
 
 
-.modal {
-  backdrop-filter: blur(10px);
+// .modal {
+//   // backdrop-filter: blur(10px);
 
-  @include media-breakpoint-down(md) {
-    backdrop-filter: none;
-  }
-}
+//   // @include media-breakpoint-down(md) {
+//   //   backdrop-filter: none;
+//   // }
+// }
 
 .modal-header {
   @include media-breakpoint-down(md) {
