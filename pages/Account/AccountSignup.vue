@@ -1,5 +1,6 @@
 <script setup>
 import { Icon } from '@iconify/vue';
+import Swal from 'sweetalert2'
 import { cities } from '../utils/cities'; // 引入城市資料
 
 const isEmailAndPasswordValid = ref(false);
@@ -12,16 +13,30 @@ isLoading.value = false
 onMounted(() => {
   isLoading.value = false
 })
+
 const nextStep = () => {
   if (userInfo.value.email === '' || userInfo.value.password === '' || passwordAgain.value === '') {
-    alert('請輸入信箱及密碼');
+    Swal.fire({
+      icon: 'error',
+      title: '請輸入信箱及密碼'
+    })
     return;
   }
   if (userInfo.value.password !== passwordAgain.value) {
-      alert('密碼不一致,請重新輸入');
-      return;
+    Swal.fire({
+      icon: 'error',
+      title: '密碼不一致，請重新輸入'
+    })
+    return;
   }
-    isEmailAndPasswordValid.value = true;
+  if (!validEmail.value) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Email格式錯誤'
+    })
+    return;
+  }
+  isEmailAndPasswordValid.value = true;
 };
 const userInfo = ref({
   name: "",
@@ -72,6 +87,13 @@ const signUp = async () => {
         body: userInfo.value   
     });
 };
+const validEmail = ref(true)
+const hasBlurredEmail = ref(false)
+function validateEmail() {
+  hasBlurredEmail.value = true
+  validEmail.value = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userInfo.value.email)
+}
+
 </script>
 
 <template>
@@ -137,8 +159,13 @@ const signUp = async () => {
             id="email"
             class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
             placeholder="hello@exsample.com"
-            type="email" v-model="userInfo.email" required
+            type="email" 
+            v-model="userInfo.email" 
+            @blur="validateEmail"
+            required
           >
+          <small v-if="!validEmail && hasBlurredEmail" class="text-danger">Email格式錯誤</small>
+
         </div>
         <div class="mb-4 fs-8 fs-md-7">
           <label

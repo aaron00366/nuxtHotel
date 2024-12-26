@@ -20,6 +20,7 @@
     "pinia-plugin-persistedstate": "^4.2.0",
     "sass": "^1.77.6",
     "sass-loader": "^10.1.0",
+    "sweetalert2": "^11.15.3",
     "swiper": "^11.1.15",
     "v-calendar": "^3.1.2",
     "vue": "latest",
