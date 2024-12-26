@@ -2,6 +2,8 @@
 import { encrypt, decrypt } from "@/utils/crypto/helper/cryptoHelper";
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
+import Swal from 'sweetalert2'
+
 const Store = useStores()
 const { isLoading,token,userInfo, storePW } = storeToRefs(Store)
 const router = useRouter();
@@ -21,7 +23,15 @@ onMounted(() => {
   }
 })
 const submitLogin = async () => {
-
+if (!loginData.value.email || !loginData.value.password) {
+    Swal.fire({
+        icon: 'error',
+        title: '請輸入帳號密碼',
+        showConfirmButton: false,
+        timer: 2500
+    })
+    return
+  }
   if (rememberMe.value) {
     localStorage.setItem('rememberEmail', loginData.value.email)
   } else {
@@ -42,12 +52,24 @@ const submitLogin = async () => {
         cookie.value = token;
         userInfo.value = result
         storePW.value = encrypt(loginData.value.password)
-        alert("登入成功");
-        router.push('/')
+        Swal.fire({
+            icon: 'success',
+            title: '登入成功',
+            showConfirmButton: false,
+            timer: 1500
+        })
+        setTimeout(() => {
+            router.push('/')
+        }, 1600)
     })
     .catch((error) => {
         loginData.value = {}
-        alert("帳號或密碼錯誤");
+        Swal.fire({
+            icon: 'error',
+            title: '登入失敗',
+            showConfirmButton: false,
+            timer: 2500
+        })
     });
 }
 </script>
