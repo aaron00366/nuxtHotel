@@ -80,6 +80,13 @@ watch([selectedYear, selectedMonth, selectedDay], () => {
 });
 
 const signUp = async () => {
+  if (userInfo.value.name === '' || userInfo.value.phone === '') {
+    Swal.fire({
+      icon: 'error',
+      title: '請填寫姓名及手機號碼'
+    })
+    return;
+  }
     userInfo.value.address.zipcode = postalCode.value;
     userInfo.value.address.detail = `${selectedCity.value}${selectedDistrict.value}${userInfo.value.address.detail}`;
     const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/user/signup`,{
@@ -89,6 +96,8 @@ const signUp = async () => {
 };
 const validEmail = ref(true)
 const hasBlurredEmail = ref(false)
+const agreementChecked = ref(false)
+
 function validateEmail() {
   hasBlurredEmail.value = true
   validEmail.value = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userInfo.value.email)
@@ -321,7 +330,7 @@ function validateEmail() {
             id="agreementCheck"
             class="form-check-input"
             type="checkbox"
-            value=""
+            v-model="agreementChecked"
           >
           <label
             class="form-check-label fw-bold"
@@ -332,7 +341,8 @@ function validateEmail() {
         </div>
         <button
           class="btn btn-primary-100 w-100 py-4 text-neutral-0 fw-bold"
-          type="button"
+          type="button" 
+          :disabled="!agreementChecked"
           @click="signUp"
         >
           完成註冊
