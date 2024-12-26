@@ -13,6 +13,14 @@ onMounted(() => {
   isLoading.value = false
 })
 const nextStep = () => {
+  if (userInfo.value.email === '' || userInfo.value.password === '' || passwordAgain.value === '') {
+    alert('請輸入信箱及密碼');
+    return;
+  }
+  if (userInfo.value.password !== passwordAgain.value) {
+      alert('密碼不一致,請重新輸入');
+      return;
+  }
     isEmailAndPasswordValid.value = true;
 };
 const userInfo = ref({
@@ -26,7 +34,7 @@ const userInfo = ref({
     detail: ""
   }
 });
-
+let passwordAgain = ref('');
 const selectedCity = ref('高雄市');
 const selectedDistrict = ref('新興區');
 const districts = ref(cities.find(city => city.name === selectedCity.value).districts);
@@ -123,13 +131,13 @@ const signUp = async () => {
             class="mb-2 text-neutral-0 fw-bold"
             for="email"
           >
-            電子信箱
+            <span class="text-danger requiredStar">*</span>電子信箱
           </label>
           <input
             id="email"
             class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
             placeholder="hello@exsample.com"
-            type="email" v-model="userInfo.email"
+            type="email" v-model="userInfo.email" required
           >
         </div>
         <div class="mb-4 fs-8 fs-md-7">
@@ -137,13 +145,13 @@ const signUp = async () => {
             class="mb-2 text-neutral-0 fw-bold"
             for="password"
           >
-            密碼
+            <span class="text-danger requiredStar">*</span>密碼
           </label>
           <input
             id="password"
             class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
             placeholder="請輸入密碼"
-            type="password" v-model="userInfo.password"
+            type="password" v-model="userInfo.password"  required
           >
         </div>
         <div class="mb-10 fs-8 fs-md-7">
@@ -151,13 +159,13 @@ const signUp = async () => {
             class="mb-2 text-neutral-0 fw-bold"
             for="confirmPassword"
           >
-            確認密碼
+            <span class="text-danger requiredStar">*</span>確認密碼
           </label>
           <input
             id="confirmPassword"
             class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
             placeholder="請再輸入一次密碼"
-            type="password"
+            type="password" required v-model="passwordAgain" 
           >
         </div>
         <button
@@ -177,13 +185,13 @@ const signUp = async () => {
             class="mb-2 text-neutral-0 fw-bold"
             for="name"
           >
-            姓名
+          <span class="text-danger requiredStar">*</span>姓名
           </label>
           <input
             id="name"
             class="form-control p-4 text-neutral-100 fw-medium border-neutral-40  rounded-3"
             placeholder="請輸入姓名"
-            type="text" v-model="userInfo.name"
+            type="text" v-model="userInfo.name" required
           >
         </div>
         <div class="mb-4 fs-8 fs-md-7">
@@ -191,13 +199,13 @@ const signUp = async () => {
             class="mb-2 text-neutral-0 fw-bold"
             for="phone"
           >
-            手機號碼
+            <span class="text-danger requiredStar">*</span>手機號碼
           </label>
           <input
             id="phone"
             class="form-control p-4 text-neutral-100 fw-medium border-neutral-40  rounded-3"
             placeholder="請輸入手機號碼"
-            type="tel" v-model="userInfo.phone"
+            type="tel" v-model="userInfo.phone" required
           >
         </div>
         <div class="mb-4 fs-8 fs-md-7">
@@ -362,5 +370,8 @@ input::placeholder {
   align-items: center;
   width: 32px;
   height: 32px;
+}
+.requiredStar{
+  margin-right: 0.5rem;
 }
 </style>

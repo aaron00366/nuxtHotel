@@ -17,7 +17,7 @@ export default defineNuxtConfig({
   ],
   app:{
     head: {
-      title: '享樂酒店',
+      title: 'Enjoyment Luxury Hotel - 享樂酒店',
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       meta: [
