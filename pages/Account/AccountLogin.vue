@@ -66,7 +66,7 @@ if (!loginData.value.email || !loginData.value.password) {
         loginData.value = {}
         Swal.fire({
             icon: 'error',
-            title: '登入失敗',
+            title: '登入失敗, 請檢查帳號密碼是否正確',
             showConfirmButton: false,
             timer: 2500
         })

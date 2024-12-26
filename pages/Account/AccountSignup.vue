@@ -32,9 +32,16 @@ const nextStep = () => {
   if (!validEmail.value) {
     Swal.fire({
       icon: 'error',
-      title: 'Email格式錯誤'
+      title: 'Email須為有效的電子信箱'
     })
     return;
+  }
+  if (passwordError.value) {
+    Swal.fire({
+      icon: 'error',
+      title: passwordError.value
+    })
+    return
   }
   isEmailAndPasswordValid.value = true;
 };
@@ -97,12 +104,27 @@ const signUp = async () => {
 const validEmail = ref(true)
 const hasBlurredEmail = ref(false)
 const agreementChecked = ref(false)
+const passwordError = ref('')
 
 function validateEmail() {
   hasBlurredEmail.value = true
   validEmail.value = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userInfo.value.email)
 }
-
+const validatePassword = () => {
+  if (userInfo.value.password.length < 8 || /^[a-zA-Z]+$/.test(userInfo.value.password)) {
+    passwordError.value = '密碼必須大於8碼，且不能只有英文'
+  } else {
+    passwordError.value = ''
+  }
+}
+let passwordErrorAgain = ref('')
+const validateAgainPassword = () => {
+  if (userInfo.value.password !== passwordAgain.value) {
+    passwordErrorAgain.value = '密碼不一致，請重新輸入'
+  } else {
+    passwordErrorAgain.value = ''
+  }
+}
 </script>
 
 <template>
@@ -173,7 +195,7 @@ function validateEmail() {
             @blur="validateEmail"
             required
           >
-          <small v-if="!validEmail && hasBlurredEmail" class="text-danger">Email格式錯誤</small>
+          <small v-if="!validEmail && hasBlurredEmail" class="text-danger">Email須為有效的電子信箱</small>
 
         </div>
         <div class="mb-4 fs-8 fs-md-7">
@@ -187,8 +209,12 @@ function validateEmail() {
             id="password"
             class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
             placeholder="請輸入密碼"
-            type="password" v-model="userInfo.password"  required
+            type="password" 
+            v-model="userInfo.password"
+            @blur="validatePassword"
+            required
           >
+          <small v-if="passwordError" class="text-danger">{{ passwordError }}</small>
         </div>
         <div class="mb-10 fs-8 fs-md-7">
           <label
@@ -201,8 +227,12 @@ function validateEmail() {
             id="confirmPassword"
             class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
             placeholder="請再輸入一次密碼"
-            type="password" required v-model="passwordAgain" 
+            type="password" 
+            required 
+            v-model="passwordAgain" 
+            @blur="validateAgainPassword"
           >
+          <small v-if="passwordError" class="text-danger">{{ passwordErrorAgain }}</small>
         </div>
         <button
           class="btn btn-neutral-40 w-100 py-4 text-neutral-60 fw-bold"
