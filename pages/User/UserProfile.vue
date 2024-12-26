@@ -15,10 +15,15 @@ const isEditPassword = ref(false);
 const isEditProfile = ref(false);
 // const userInfo = ref({})
 const updataInfo = ref({})
+const originalData = ref({})
 const birthdayYear = ref(null)
 const birthdayMonth = ref(null)
 const birthdayDay = ref(null)
 const getUserCookie = useCookie("auth");
+const isModified = computed(() =>
+  JSON.stringify(updataInfo.value) !== JSON.stringify(originalData.value)
+)
+
 onMounted( async () => {
 
   const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/user`,{
@@ -35,6 +40,7 @@ onMounted( async () => {
   birthdayYear.value = parsed.year()
   birthdayMonth.value = parsed.month() + 1 // month 0-based
   birthdayDay.value = parsed.date()
+
   updataInfo.value = {
   userId: userInfo.value._id,
   name: userInfo.value.name,
@@ -47,6 +53,8 @@ onMounted( async () => {
   // oldPassword: decrypt(storePW.value),
   // newPassword: ""
 }
+
+originalData.value = JSON.parse(JSON.stringify(updataInfo.value))
 })
 
 const phoneWithoutZero = computed(() => {
@@ -77,6 +85,10 @@ watch(selectedDistrict, (newDistrict) => {
 });
 
 const handleSubmitUpdate = async () => {
+  if (!isModified.value) {
+    alert('尚未修改資料。')
+    return
+  }
     const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/user`,{
       method: "PUT",
       headers: {
