@@ -25,10 +25,12 @@ onMounted(() => {
 const submitLogin = async () => {
 if (!loginData.value.email || !loginData.value.password) {
     Swal.fire({
+        position: "top-end",
         icon: 'error',
         title: '請輸入帳號密碼',
         showConfirmButton: false,
-        timer: 2500
+        timer: 2500,
+        toast: true
     })
     return
   }
@@ -53,10 +55,12 @@ if (!loginData.value.email || !loginData.value.password) {
         userInfo.value = result
         storePW.value = encrypt(loginData.value.password)
         Swal.fire({
+            position: "top-end",
             icon: 'success',
             title: '登入成功',
             showConfirmButton: false,
-            timer: 1500
+            timer: 1500,
+            toast: true
         })
         setTimeout(() => {
             router.push('/')
@@ -65,10 +69,12 @@ if (!loginData.value.email || !loginData.value.password) {
     .catch((error) => {
         loginData.value = {}
         Swal.fire({
+            position: "top-end",
             icon: 'error',
             title: '登入失敗, 請檢查帳號密碼是否正確',
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
+            toast: true
         })
     });
 }

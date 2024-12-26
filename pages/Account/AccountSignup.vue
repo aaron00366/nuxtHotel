@@ -17,29 +17,45 @@ onMounted(() => {
 const nextStep = () => {
   if (userInfo.value.email === '' || userInfo.value.password === '' || passwordAgain.value === '') {
     Swal.fire({
+      position: "top-end",
       icon: 'error',
-      title: '請輸入信箱及密碼'
+      title: '請輸入信箱及密碼',
+      toast: true,
+      showConfirmButton: false,
+      timer: 2500
     })
     return;
   }
   if (userInfo.value.password !== passwordAgain.value) {
     Swal.fire({
+      position: "top-end",
       icon: 'error',
-      title: '密碼不一致，請重新輸入'
+      title: '密碼不一致，請重新輸入',
+      toast: true,
+      showConfirmButton: false,
+      timer: 2500
     })
     return;
   }
   if (!validEmail.value) {
     Swal.fire({
+      position: "top-end",
       icon: 'error',
-      title: 'Email須為有效的電子信箱'
+      title: 'Email須為有效的電子信箱',
+      toast: true,
+      showConfirmButton: false,
+      timer: 2500
     })
     return;
   }
   if (passwordError.value) {
     Swal.fire({
+      position: "top-end",
       icon: 'error',
-      title: passwordError.value
+      title: passwordError.value,
+      toast: true,
+      showConfirmButton: false,
+      timer: 2500
     })
     return
   }
@@ -89,8 +105,12 @@ watch([selectedYear, selectedMonth, selectedDay], () => {
 const signUp = async () => {
   if (userInfo.value.name === '' || userInfo.value.phone === '') {
     Swal.fire({
+      position: "top-end",
       icon: 'error',
-      title: '請填寫姓名及手機號碼'
+      title: '請填寫姓名及手機號碼',
+      toast: true,
+      showConfirmButton: false,
+      timer: 2500
     })
     return;
   }
