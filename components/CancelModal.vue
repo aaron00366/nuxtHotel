@@ -16,7 +16,6 @@ onMounted(() => {
 
 const openModal = () => {
   // modal.value.show();
-  console.log('openModal called')
   if (modal.value) {
     modal.value.show()
   } else {
@@ -33,7 +32,7 @@ defineExpose({
   closeModal
 })
 
-const emit = defineEmits(['handleDateChange']);
+const emit = defineEmits(['handleCancelOrder']);
 
 
 const props = defineProps({
@@ -44,8 +43,8 @@ const props = defineProps({
 })
 
 const confirmCancelOrder = () => {
-  console.log('confirmDate called')
   closeModal();
+  emit('handleCancelOrder');
 }
 
 </script>

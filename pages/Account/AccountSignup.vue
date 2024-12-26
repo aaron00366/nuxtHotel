@@ -58,7 +58,7 @@ watch([selectedYear, selectedMonth, selectedDay], () => {
 
 const signUp = async () => {
     userInfo.value.address.zipcode = postalCode.value;
-    
+    userInfo.value.address.detail = `${selectedCity.value}${selectedDistrict.value}${userInfo.value.address.detail}`;
     const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/user/signup`,{
         method: "POST", 
         body: userInfo.value   

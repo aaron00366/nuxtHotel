@@ -4,6 +4,12 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/zh-tw'; // 引入中文本地化
 // import 'bootstrap/js/dist/modal';
 import CancelModal from '@/components/CancelModal.vue';
+import { useRouter } from 'vue-router';
+// pinia
+import { storeToRefs } from 'pinia';
+const Store = useStores()
+const { cannotOrder } = storeToRefs(Store)
+const router = useRouter();
 const cancelOrderModal = ref(null);
 const openModal = () => {
   cancelOrderModal.value.openModal();
@@ -17,7 +23,7 @@ const formatDate = (date) => {
 }
 onMounted(() => {
   getOrder();
-
+  cannotOrder.value = true;
 });
 
 const getOrder = async () => {
@@ -25,29 +31,48 @@ const getOrder = async () => {
   const { data } = await useFetch("https://nuxr3.zeabur.app/api/v1/orders/",{
     headers: {
       Authorization: `Bearer ${getUserCookie.value}`
-    }
+    },
   });
   result.value = data.value.result;
-  console.log(result.value);
+  console.log('獲取訂單列表:', result.value);
+  console.log('訂單數量:', result.value.length);
   const ordersLength = result.value.length;
   if (result.value.length === 0) {
     return;
   }
   recentOrder.value = result.value[ordersLength - 1];
-  console.log(recentOrder.value);
 }
 
 const cancelOrder = async () => {
-  console.log('點刪除');
-  const getUserCookie = useCookie("auth");
-  const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/orders/${recentOrder.value._id}/`,{
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${getUserCookie.value}`
+  try {
+    console.log('點刪除');
+    const getUserCookie = useCookie("auth");
+    
+    // 等待刪除請求完成
+    const { data, error } = await useFetch(
+      `https://nuxr3.zeabur.app/api/v1/orders/${recentOrder.value._id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${getUserCookie.value}`
+      },
+    });
+
+    if (error.value) {
+      console.error('刪除失敗:', error.value);
+      return;
     }
-  });
-  console.log(data.value);
-  getOrder();
+
+    console.log('刪除成功:', data.value);
+    // 等待一小段時間確保後端處理完成
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    // 確保刪除完成後才重新獲取訂單
+    await getOrder();
+  } catch (err) {
+    console.error('刪除過程發生錯誤:', err);
+  }
+}
+const getOrderDetail = () => {
+  router.push(`/RoomDetail/${recentOrder.value.roomId._id}`);
 }
 </script>
 
@@ -151,13 +176,13 @@ const cancelOrder = async () => {
           >
             取消預訂
           </button>
-          <NuxtLink
+          <button
             to="/RoomDetail"
             class="btn btn-primary-100 text-neutral-0 w-50 py-4 fw-bold"
-            type="button"
+            type="button" @click="getOrderDetail"
           >
             查看詳情
-          </NuxtLink>
+          </button>
         </div>
       </div>
     </div>
@@ -264,7 +289,8 @@ const cancelOrder = async () => {
         </div>
       </div>
     </div> -->
-    <CancelModal ref="cancelOrderModal"/>
+    <CancelModal 
+    ref="cancelOrderModal" @handleCancelOrder="cancelOrder"/>
   </ClientOnly>
   </div>
 </template>

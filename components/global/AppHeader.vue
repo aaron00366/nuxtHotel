@@ -29,7 +29,6 @@ onUnmounted(() => {
 })
 
 const logout = () => {
-  console.log('logout')
   token.value = ''
   userInfo.value = {}
   router.push('/Account/AccountLogin')

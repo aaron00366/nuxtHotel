@@ -21,7 +21,7 @@ const importImage = (url) => {
 
 import { storeToRefs } from 'pinia';
 const Store = useStores()
-const { isLoading } = storeToRefs(Store)
+const { isLoading,cannotOrder } = storeToRefs(Store)
 isLoading.value = true
 // const roomImages = computed(() => {
 //   const rooms = ['a', 'b', 'c', 'd'];
@@ -45,6 +45,7 @@ onMounted(() => {
   if (roomsData.value.result) {
     isLoading.value = false
   }
+  cannotOrder.value = false
 })
 
   // 設置 SEO 屬性

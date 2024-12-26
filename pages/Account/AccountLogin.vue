@@ -1,18 +1,33 @@
 <script setup>
+import { encrypt, decrypt } from "@/utils/crypto/helper/cryptoHelper";
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 const Store = useStores()
-const { isLoading,token,userInfo } = storeToRefs(Store)
+const { isLoading,token,userInfo, storePW } = storeToRefs(Store)
 const router = useRouter();
 const loginData = ref({
     email: '',
     password: '',
 })
+const rememberMe = ref(false)
+
 isLoading.value = false
 onMounted(() => {
   isLoading.value = false
+  const savedEmail = localStorage.getItem('rememberEmail')
+  if (savedEmail) {
+    loginData.value.email = savedEmail
+    rememberMe.value = true
+  }
 })
 const submitLogin = async () => {
+
+  if (rememberMe.value) {
+    localStorage.setItem('rememberEmail', loginData.value.email)
+  } else {
+    localStorage.removeItem('rememberEmail')
+  }
+
   const { data } = await useFetch(`https://nuxr3.zeabur.app/api/v1/user/login`,{
         method: "POST", 
         body: loginData.value   
@@ -26,6 +41,7 @@ const submitLogin = async () => {
       });
         cookie.value = token;
         userInfo.value = result
+        storePW.value = encrypt(loginData.value.password)
         alert("登入成功");
         router.push('/')
     })
@@ -83,7 +99,7 @@ const submitLogin = async () => {
           <input
             id="remember"
             class="form-check-input"
-            type="checkbox"
+            type="checkbox" v-model="rememberMe"
           >
           <label
             class="form-check-label fw-bold"

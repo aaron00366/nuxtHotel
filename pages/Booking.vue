@@ -11,7 +11,7 @@ dayjs.locale('zh-tw');
 const router = useRouter();
 import { storeToRefs } from 'pinia';
 const Store = useStores()
-const { roomDetail, setBookingInfo, isLoading,userInfo, BookingConfirmData } = storeToRefs(Store)
+const { roomDetail, setBookingInfo, isLoading,userInfo, BookingConfirmData, cannotOrder, userCity, userDistrict } = storeToRefs(Store)
 console.log(setBookingInfo.value)
 const tempUserInfo = ref({
     address: {
@@ -86,9 +86,13 @@ const applyUserInfo = () => {
     phone: userInfo.value.phone,
     email: userInfo.value.email
   }
-  selectedCity.value = userInfo.value.address.city;
-  selectedDistrict.value = userInfo.value.address.county;
+  selectedCity.value = userCity.value;
+  selectedDistrict.value = userDistrict.value;
 }
+
+onMounted(() => {
+  cannotOrder.value = false
+})
 </script>
 
 <template>

@@ -13,7 +13,7 @@ const openModal = () => {
 // pinia
 import { storeToRefs } from 'pinia';
 const Store = useStores()
-const { roomDetail, setBookingInfo, isLoading } = storeToRefs(Store)
+const { roomDetail, setBookingInfo, isLoading, cannotOrder } = storeToRefs(Store)
 isLoading.value = true
 
 roomDetail.value = roomData.value.result
@@ -136,7 +136,7 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="py-10 py-md-30 bg-primary-10">
+    <section class="py-10 bg-primary-10" >
       <div class="container">
         <div class="row">
           <div class="col-12 col-md-7 d-flex flex-column gap-6 gap-md-20">
@@ -254,7 +254,7 @@ onMounted(() => {
               </ol>
             </section>
           </div>
-          <div class="d-none d-md-block col-md-5">
+          <div class="d-none d-md-block col-md-5" v-if="!cannotOrder">
             <div
               class="rounded-3xl position-sticky d-flex flex-column gap-10 p-10 ms-auto bg-neutral-0"
               style="top: 160px; max-width: 478px;"

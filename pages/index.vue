@@ -36,14 +36,12 @@ onMounted(async() => {
   if (newsData && roomsData && culinaryData){
     isLoading.value = false
   }
-  const getUserCookie = useCookie("auth");   
-  console.log(getUserCookie.value) 
+  const getUserCookie = useCookie("auth");
   const { data:checkData } = await useFetch("https://nuxr3.zeabur.app/api/v1/user/check",{
     headers: {
       Authorization: `Bearer ${getUserCookie.value}`
     }
   });
-console.log(checkData.value)
 })
 </script>
 

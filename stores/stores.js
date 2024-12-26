@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from 'vue'
+import { encrypt, decrypt } from "@/utils/crypto/helper/cryptoHelper";
+
 export const useStores = defineStore("news", () => {
     let roomDetail = ref(null);
     let setBookingInfo = ref({});
@@ -7,13 +9,21 @@ export const useStores = defineStore("news", () => {
     let token = ref('');
     let userInfo = ref({});
     let BookingConfirmData = ref({});
+    let cannotOrder = ref(false);
+    let storePW = ref('');
+    let userCity = ref('');
+    let userDistrict = ref('');
     return {
         roomDetail,
         setBookingInfo,
         isLoading,
         token,
         userInfo,
-        BookingConfirmData
+        BookingConfirmData,
+        cannotOrder,
+        storePW,
+        userCity,
+        userDistrict,
     }
    },
    {
